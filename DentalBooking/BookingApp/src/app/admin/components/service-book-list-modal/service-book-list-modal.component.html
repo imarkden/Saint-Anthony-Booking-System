@@ -1,0 +1,36 @@
+<div class="modal-header">
+    <h4 class="modal-title">Online Booking List</h4>
+    <button type="button" class="btn-close btn" aria-label="Close" (click)="closeModal()">
+      
+    </button>
+</div>
+  <div class="modal-body">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Phone</th>
+          <th>Service</th>
+          <th>Date</th>
+          <th>Time</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let book of booking">
+          <td>{{ book.name }}</td>
+          <td>{{ book.phone }}</td>
+          <td>{{ book.service }}</td>
+          <td>{{ book.selectedDate }}</td>
+          <td>{{ book.selectedTime }}</td>
+          <td>{{ book.status }}</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary w-100" aria-label="Close" (click)="closeModal()">
+            <span aria-hidden="true">Close</span>
+          </button>
+    </div>
+</div>
+  

@@ -1,0 +1,20 @@
+.navbar-nav {
+    .nav-link:hover {
+      color: #fff;
+    }
+  }
+
+.fontSize {
+  @media screen and (max-width: 700px) {
+  }
+}
+
+.hid {
+  @media screen and (max-width: 700px) {
+    display: none;
+  }
+}
+
+.margin {
+  margin: 0 auto;
+}

@@ -1,0 +1,45 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+  <div class="container-fluid">
+    <a class="navbar-brand d-flex align-items-center mx-auto" routerLink="dashboard">
+      <img src="../../assets/logo.png" alt="logo" width="30" height="30" class="me-2">
+      <span class="text-white fs-4 fw-bold fontSize" style="font-family: 'Tapestry', cursive;">Saint Anthony <label style="font-family: 'Rubik Maze', cursive; font-weight: 400;" class="hid">| Dental Clinic</label></span>
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+      <ul class="navbar-nav fw-bold">
+        <li class="nav-item me-5">
+          <a class="nav-link" routerLink="">Home</a>
+        </li>
+        <li class="nav-item me-5">
+          <a class="nav-link" routerLink="services">Services</a>
+        </li>
+        <li class="nav-item me-5">
+          <a class="nav-link" routerLink="about">About Us</a>
+        </li>
+        <li class="nav-item">
+          <button class="btn btn-outline-success me-2" routerLink="book-now">BOOK NOW</button>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="offcanvas offcanvas-start bg-dark text-white" tabindex="-1" id="sidebar" aria-labelledby="sidebarLabel">
+  <div class="offcanvas-header">
+  </div>
+</div>
+
+<div class="">
+  <router-outlet></router-outlet>
+</div>
+
+<div class="footer d-flex align-items-center">
+  <div class="w-100 bg-dark text-white">
+    <div class="container p-3">
+          <p><i class="fa fa-location-pin me-3"></i>BLK 141 Lot 04, Maharlika Rd. Taguig City, Metro Manila<label class="float-end"> © Saint Anthony Dental Clinic | Website Development by Mark Dennis Diaz</label> 
+         </p>
+    </div>
+  </div>
+</div>

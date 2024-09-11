@@ -1,0 +1,126 @@
+
+form {
+
+    .input-field {
+        border-radius: 5px;
+        border: 1px solid #e1e1e1;
+        color: #3f3f3f;
+
+        padding: 5px;
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+
+        input {
+            border: none;
+            outline: none;
+            box-shadow: none;
+            width: 100%;
+        }
+    }
+
+}
+
+.disabled {
+    background-color: #fff;
+    pointer-events: none;
+  }
+
+.size {
+    @media screen and (max-width: 700px) {
+        width: 100px;
+    }
+}
+
+.time-table th {
+    text-align: center;
+  }
+  
+  .time-table .table-success {
+    background-color: #c3e6cb;
+  }
+  
+  .time-table .table-danger {
+    background-color: #f8d7da;
+  }
+  
+.bgwhite {
+background-color: #fff;
+}
+
+.bgdirty {
+background-color: #f2f2f2;
+}
+
+.timetable {
+    height: 662.5px;
+    @media screen and (max-width: 700px) {
+        transform: scale(0.5);
+    }
+}
+
+.mobile {
+    @media screen and (max-width: 700px) {
+        width: 400px;
+        font-size: 16px;
+    }
+}
+
+.mobile2 {
+    @media screen and (max-width: 700px) {
+        width: 400px;
+        font-size: 12.8px;
+    }
+}
+
+.padding {
+    padding: 2rem;
+    @media screen and (max-width: 700px) {  
+        padding: 0.5rem;
+    }
+}
+
+.cnt {
+    margin: auto;
+    width: 80%;
+
+    @media screen and (max-width: 700px) {
+        width: 100%;
+    }
+
+}
+
+.home__body-info {
+    font-size: 13px;
+    font-weight: bolder;
+
+    @media screen and (max-width: 700px) {
+        font-size: smaller;
+    }
+}
+
+.home__body-title {
+    color: rgb(12, 82, 27);
+    margin: 30px auto;
+    scale: 3;
+    font-weight: bolder;
+
+    @media screen and (max-width: 700px) {
+        font-size: 8px;
+    }
+}
+
+.fontSize {
+    font-family: 'Tapestry', cursive;
+
+    @media screen and (max-width: 700px) {
+        font-size: 13px !important;
+        font-family: 'Courier New', Courier, monospace;
+    }
+}
+
+.hid {
+    @media screen and (max-width: 700px) {
+      display: none;
+    }
+  }

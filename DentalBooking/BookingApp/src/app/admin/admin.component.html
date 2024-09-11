@@ -1,0 +1,60 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand d-flex align-items-center mx-auto" routerLink="dashboard">
+        <img src="../../assets/logo.png" alt="logo" width="30" height="30" class="me-2">
+        <span class="text-white fs-4 fw-bold" style="font-family: 'Tapestry', cursive;">Saint Anthony <label style="font-family: 'Rubik Maze', cursive; font-weight: 400;">| Dental Clinic</label></span>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+        <ul class="navbar-nav fw-bold">
+          <li class="nav-item me-3">
+            <a class="nav-link" routerLink="dashboard">Dashboard</a>
+          </li>
+          <li class="nav-item me-3">
+            <a class="nav-link" routerLink="patients">Patients</a>
+          </li>
+          <li class="nav-item me-3">
+            <a class="nav-link" routerLink="book-list">Book List</a>
+          </li>
+          <li class="nav-item me-3">
+            <a class="nav-link" routerLink="doctors">Doctors</a>
+          </li>
+          <li class="nav-item me-3">
+            <a class="nav-link" routerLink="services">Services</a>
+          </li>
+          <li class="nav-item me-3">
+            <a class="nav-link" routerLink="reports">Reports</a>
+          </li>
+          <li class="nav-item ms-5">
+            <button class="btn btn-outline-danger me-2" (click)="logout()">Logout</button>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  
+  <div class="offcanvas offcanvas-start bg-dark text-white" tabindex="-1" id="sidebar" aria-labelledby="sidebarLabel">
+    <div class="offcanvas-header">
+    </div>
+</div>
+
+<div class="container">
+    <router-outlet></router-outlet>
+</div>
+
+<div class="footer w-100 bg-dark text-white mt-5 sticky-bottom">
+    <marquee behavior="" direction=""><label class="fw-bold">Be Vulnerable: </label> Frightening, but there is an unrivaled happiness that comes through acts of vulnerability. These moments confirm we are human. That we are imperfect. We open ourselves and, as if looking in the mirror for the first time, are able to step back and see who we are a bit more clearly--for better or worse. We accept ourselves, and let others do the same.
+
+      Vulnerability is the secret. We as a society go to great lengths to hide who we are, and create masks, personas, and images to portray the parts we know will receive approval--while banishing the rest to the shadows. But all our best work comes from being vulnerable. All our happiest moments and saddest realizations come from being vulnerable. All our deepest loves and greatest friendships come from being vulnerable. All our art, all our music, all our creativity comes from being vulnerable.
+      
+      Vulnerability is the secret to happiness--and that is why I started this article with the breath. Happiness is not out there somewhere, waiting for you. Happiness is hidden within vulnerability, and vulnerability is hidden within you.
+    
+    <label class="fw-bold">Develop positive habits: </label> We as humans like to believe "happiness" is the destination wherein there is no more challenge. Everything is easy.
+
+    In fact, it is quite the opposite. We love challenge. We thrive off challenge. We grow through challenge. We discover ourselves by being challenged. And it is not the thing itself, but your emotional state that decides whether or not that process of growing and being challenged is enjoyable, in the same way a workout can be enjoyable or grueling and painful (in the same way a workout to someone out of shape can be grueling and painful).
+    
+    The simple act of developing positive habits in itself brings a deeply "earned" happiness. We are happy because we have overcome ourselves.
+    </marquee>
+</div>

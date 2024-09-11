@@ -1,0 +1,367 @@
+<div class="container mt-5">
+  <h2 class="fw-bold" style="font-family: 'Rubik Maze', cursive">DOCTORS</h2>
+  <p class="lh-1 fw-bold mb-5">{{dateTime}}</p>
+  <div class="shadow p-3 mb-5 bg-body-tertiary rounded">
+    <div class="row mb-3">
+      <label for="sortSelect" class="form-label">Sort by:</label>
+      <div class="col-md-6">
+        <select id="sortSelect" [(ngModel)]="sortBy" (change)="sortDoctors()" class="form-select w-100">
+          <option value="id">ID</option>
+          <option value="date">Name</option>
+        </select>
+      </div>
+      <div class="col-md-6 d-flex justify-content-end align-items-center">
+        <button type="button" class="btn btn-secondary me-1 fa fa-print" (click)="printList()"></button>
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addDoctorModal">
+          Add Doctor
+        </button>
+      </div>
+    </div>
+    <table class="table">
+      <thead>
+        <tr>
+          <th class="col-1">ID</th>
+          <th class="col-1">Name</th>
+          <th class="col-1">Birth Date</th>
+          <th class="col-1">Age</th>
+          <th class="col-1">Phone</th>
+          <th class="col-1">Email</th>
+          <th class="col-2">Action</th>
+        </tr>
+      </thead>
+      <tbody id="doctorList">
+        <tr *ngFor="let doctor of doctors">
+          <td>{{ doctor.id }}</td>
+          <td>{{ doctor.name }}</td>
+          <td>{{ doctor.birthdate | date: 'dd MMMM yyyy' }}</td>
+          <td>{{ calculateAge(doctor.birthdate) }}</td>
+          <td>{{ doctor.phone }}</td>
+          <td>{{ doctor.email }}</td>
+          <td>
+            <button type="button" class="btn btn-info me-1" (click)="selectDoctor(doctor)" data-bs-toggle="modal" data-bs-target="#viewDoctorModal">View</button>
+            <button type="button" class="btn btn-warning me-1" (click)="selectDoctor(doctor)" data-bs-toggle="modal" data-bs-target="#editDoctorModal">Edit</button>
+            <button type="button" class="btn btn-danger" (click)="deleteDoctor(doctor.id)">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Add Doctor Modal -->
+<div class="modal fade" id="addDoctorModal" tabindex="-1" aria-labelledby="addDoctorModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addDoctorModalLabel">Add Doctor</h5>
+        <button type="button" id="closeAdd" (click)="clearModal()" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="addDoctorForm" (ngSubmit)="addDoctor()" [formGroup]="doctorForm">
+          <div class="form-group pt-3" [class.error]="doctorForm.controls['name'].dirty && doctorForm.hasError('required', 'name')">
+            <label class="fw-bold">Name</label>
+            <div class="input-field">
+              <div class="icon-container">
+                <i class="fa fa-user-doctor p-2"></i>
+              </div>
+              <input formControlName="name" type="text" placeholder="Name" class="w-100">
+            </div>
+          </div>
+         <small *ngIf="doctorForm.controls['name'].dirty && doctorForm.hasError('required','name')" class="text-danger">Name is required.</small>
+         <small *ngIf="doctorForm.controls['name'].dirty && doctorForm.hasError('pattern','name')" class="text-danger">Name only accept letters.</small>
+
+         <div class="form-group pt-3" [class.error]="doctorForm.controls['gender'].dirty && doctorForm.hasError('required', 'gender')">
+          <label class="fw-bold">Gender</label>
+           <div class="input-field">
+             <div class="icon-container">
+               <i class="fa fa-venus-mars p-2"></i>
+             </div>
+             <input formControlName="gender" type="text" placeholder="Gender" class="w-100">
+           </div>
+         </div>
+        <small *ngIf="doctorForm.controls['name'].dirty && doctorForm.hasError('required','name')" class="text-danger">Gender is required.</small>
+
+         <div class="form-group pt-3" [class.error]="doctorForm.controls['birthdate'].dirty && doctorForm.hasError('required', 'birthdate')">
+          <label class="fw-bold">Birth Date</label>
+          <div class="input-field">
+            <div class="icon-container">
+              <i class="fa fa-calendar p-2"></i>
+            </div>
+            <input formControlName="birthdate" type="date" [max]="maxDate" class="w-100" (click)="setMaxDate()">
+          </div>
+        </div>
+        <small class="text-danger" *ngIf="doctorForm.controls['birthdate'].dirty && doctorForm.hasError('required', 'birthdate')">Birthdate is required</small>
+        <small class="text-danger" *ngIf="doctorForm.controls['birthdate'].dirty && doctorForm.hasError('minimumAge', 'birthdate')">Age must be at least 18 years old</small>
+        
+        <div class="form-group pt-3" [class.error]="doctorForm.controls['phone'].dirty && doctorForm.hasError('required', 'phone')">
+          <label class="fw-bold">Phone</label>
+          <div class="input-field">
+            <div class="icon-container">
+              <i class="fa fa-phone p-2"></i>
+            </div>
+            <input formControlName="phone" type="tel" placeholder="Phone" class="w-100">
+          </div>
+          <small *ngIf="doctorForm.controls['phone'].dirty && doctorForm.hasError('required','phone')" class="text-danger">*Phone is required.</small>
+          <small *ngIf="doctorForm.controls['phone'].dirty && doctorForm.hasError('phoneInvalid', 'phone')" class="text-danger">*Phone must start with '+63' and be followed by 10 digits.</small>
+        </div>
+        
+        <div class="form-group pt-3" [class.error]="doctorForm.controls['email'].dirty && doctorForm.hasError('required', 'email')">
+          <label class="fw-bold">Email</label>
+          <div class="input-field">
+            <div class="icon-container">
+              <i class="fa fa-envelope p-2"></i>
+            </div>
+            <input formControlName="email" type="email" placeholder="Email" class="w-100">
+          </div>
+          <small *ngIf="doctorForm.controls['email'].dirty && doctorForm.hasError('required','email')" class="text-danger">*Email is required.</small>
+          <small *ngIf="doctorForm.controls['email'].dirty && doctorForm.hasError('email','email')" class="text-danger">*Invalid email format.</small>
+        </div>
+
+        <div class="form-group pt-3" [class.error]="doctorForm.controls['username'].dirty && doctorForm.hasError('required', 'username')">
+          <label class="fw-bold">Username</label>
+           <div class="input-field">
+             <div class="icon-container">
+               <i class="fa fa-user p-2"></i>
+             </div>
+             <input formControlName="username" type="text" placeholder="Username" class="w-100" [value]="selectedDoctor.username">
+           </div>
+         </div>
+        <small *ngIf="doctorForm.controls['username'].dirty && doctorForm.hasError('required','username')" class="text-danger">*Name is required.</small>
+
+        <div class="form-group pt-3" [class.error]="doctorForm.controls['password'].dirty && doctorForm.hasError('required', 'password')">
+          <label class="fw-bold">Password</label>
+           <div class="input-field">
+             <div class="icon-container">
+               <i class="fa fa-lock p-2"></i>
+             </div>
+             <input formControlName="password" type="text" placeholder="Password" class="w-100" [value]="selectedDoctor.password">
+           </div>
+         </div>
+        <small *ngIf="doctorForm.controls['password'].dirty && doctorForm.hasError('required','password')" class="text-danger">*Name is required.</small>
+
+        
+        <button type="submit" class="btn btn-primary float-end w-25 mt-2">Add</button>
+        <button type="button" class="btn btn-secondary float-end me-1 w-25 mt-2" (click)="clearModal()">Clear</button>
+      </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- Edit Doctor Modal -->
+<div class="modal fade" id="editDoctorModal" tabindex="-1" aria-labelledby="editDoctorModal" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editDoctorModalLabel">Edit Doctor</h5>
+        <button type="button" id="closeEdit" (click)="clearModal()" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="editDoctorForm" (ngSubmit)="editDoctor()" [formGroup]="editDoctorForm">
+          <label class="fw-bold">ID</label>
+              <div class="input-field">
+                <div class="icon-container">
+                  <i class="fa fa-id-card p-2"></i>
+                </div>
+                <input type="text" class="w-100 disabled" [value]="selectedDoctor.id" [disabled]="true">
+              </div>
+          
+              <div class="form-group pt-3" [class.error]="editDoctorForm.controls['name'].dirty && editDoctorForm.hasError('required', 'name')">
+                <label class="fw-bold">Name</label>
+                 <div class="input-field">
+                   <div class="icon-container">
+                     <i class="fa fa-user-doctor p-2"></i>
+                   </div>
+                   <input formControlName="name" type="text" placeholder="Name" class="w-100" [value]="selectedDoctor.name">
+                 </div>
+               </div>
+              <small *ngIf="editDoctorForm.controls['name'].dirty && editDoctorForm.hasError('required','name')" class="text-danger">*Name is required.</small>
+              <small *ngIf="editDoctorForm.controls['name'].dirty && editDoctorForm.hasError('pattern','name')" class="text-danger">Name only accept letters.</small>
+
+              <div class="form-group pt-3" [class.error]="editDoctorForm.controls['gender'].dirty && editDoctorForm.hasError('required', 'gender')">
+                <label class="fw-bold">Gender</label>
+                 <div class="input-field">
+                   <div class="icon-container">
+                     <i class="fa fa-venus-mars p-2"></i>
+                   </div>
+                   <input formControlName="gender" type="text" placeholder="Gender" class="w-100" [value]="selectedDoctor.gender">
+                 </div>
+               </div>
+              <small *ngIf="editDoctorForm.controls['name'].dirty && editDoctorForm.hasError('required','name')" class="text-danger">*Name is required.</small>
+
+              <div class="form-group pt-3" [class.error]="editDoctorForm.controls['birthdate'].dirty && editDoctorForm.hasError('required', 'birthdate')">
+                <label class="fw-bold">Birth Date</label>
+                 <div class="input-field">
+                   <div class="icon-container">
+                     <i class="fa fa-user p-2"></i>
+                   </div>
+                   <input formControlName="birthdate" type="date" class="w-100" [value]="selectedDoctor.birthdate">
+                 </div>
+               </div>
+              <small *ngIf="editDoctorForm.controls['birthdate'].dirty && editDoctorForm.hasError('required','birthdate')" class="text-danger">*Birth date is required.</small>
+              <small class="text-danger" *ngIf="doctorForm.controls['birthdate'].dirty && editDoctorForm.hasError('minimumAge', 'birthdate')">Age must be at least 18 years old</small>
+
+              <div class="form-group pt-3" [class.error]="editDoctorForm.controls['phone'].dirty && editDoctorForm.hasError('required', 'phone')">
+                <label class="fw-bold">Phone</label>
+                 <div class="input-field">
+                   <div class="icon-phone">
+                     <i class="fa fa-user p-2"></i>
+                   </div>
+                   <input formControlName="phone" type="tel" placeholder="+639XXXXXXXXX" class="w-100" [value]="selectedDoctor.phone">
+                 </div>
+               </div>
+              <small *ngIf="editDoctorForm.controls['phone'].dirty && editDoctorForm.hasError('required','phone')" class="text-danger">*Phone number is required.</small>
+              <small *ngIf="editDoctorForm.controls['phone'].dirty && editDoctorForm.hasError('phoneInvalid', 'phone')" class="text-danger">*Phone must start with '+63' and be followed by 10 digits.</small>
+
+              <div class="form-group pt-3" [class.error]="editDoctorForm.controls['email'].dirty && doctorForm.hasError('required', 'email')">
+                <label class="fw-bold">Email</label>
+                <div class="input-field">
+                  <div class="icon-container">
+                    <i class="fa fa-envelope p-2"></i>
+                  </div>
+                  <input formControlName="email" type="email" placeholder="Email" class="w-100" [value]="selectedDoctor.email">
+                </div>
+                <small *ngIf="editDoctorForm.controls['email'].dirty && editDoctorForm.hasError('required','email')" class="text-danger">*Email is required.</small>
+                <small *ngIf="editDoctorForm.controls['email'].dirty && editDoctorForm.hasError('email','email')" class="text-danger">*Invalid email format.</small>
+              </div>
+              
+              <div class="form-group pt-3" [class.error]="editDoctorForm.controls['username'].dirty && editDoctorForm.hasError('required', 'username')">
+                <label class="fw-bold">Username</label>
+                 <div class="input-field">
+                   <div class="icon-container">
+                     <i class="fa fa-user p-2"></i>
+                   </div>
+                   <input formControlName="username" type="text" placeholder="Username" class="w-100" [value]="selectedDoctor.username">
+                 </div>
+               </div>
+              <small *ngIf="editDoctorForm.controls['username'].dirty && editDoctorForm.hasError('required','username')" class="text-danger">*Name is required.</small>
+
+              <div class="form-group pt-3" [class.error]="editDoctorForm.controls['password'].dirty && editDoctorForm.hasError('required', 'password')">
+                <label class="fw-bold">Password</label>
+                 <div class="input-field">
+                   <div class="icon-container">
+                     <i class="fa fa-lock p-2"></i>
+                   </div>
+                   <input formControlName="password" type="text" placeholder="Password" class="w-100" [value]="selectedDoctor.password">
+                 </div>
+               </div>
+              <small *ngIf="editDoctorForm.controls['password'].dirty && editDoctorForm.hasError('required','password')" class="text-danger">*Name is required.</small>
+
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-primary">Save changes</button>
+            </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- View Doctor Modal -->
+<div class="modal fade" id="viewDoctorModal" tabindex="-1" aria-labelledby="viewDoctorModal" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="viewDoctorModalLabel">Edit Doctor</h5>
+        <button type="button" id="closeEdit" (click)="clearModal()" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="editDoctorForm" (ngSubmit)="editDoctor()" [formGroup]="editDoctorForm">
+          <label class="fw-bold">ID</label>
+              <div class="input-field">
+                <div class="icon-container">
+                  <i class="fa fa-id-card p-2"></i>
+                </div>
+                <input type="text" class="w-100 disabled" [value]="selectedDoctor.id" [disabled]="true" readonly>
+              </div>
+          
+              <div class="form-group pt-3" [class.error]="editDoctorForm.controls['name'].dirty && editDoctorForm.hasError('required', 'name')">
+                <label class="fw-bold">Name</label>
+                 <div class="input-field">
+                   <div class="icon-container">
+                     <i class="fa fa-user-doctor p-2"></i>
+                   </div>
+                   <input formControlName="name" type="text" placeholder="Name" class="w-100" [value]="selectedDoctor.name" readonly>
+                 </div>
+               </div>
+              <small *ngIf="editDoctorForm.controls['name'].dirty && editDoctorForm.hasError('required','name')" class="text-danger">*Name is required.</small>
+              <small *ngIf="doctorForm.controls['name'].dirty && doctorForm.hasError('pattern','name')" class="text-danger">Name only accept letters.</small>
+
+              <div class="form-group pt-3" [class.error]="editDoctorForm.controls['birthdate'].dirty && editDoctorForm.hasError('required', 'birthdate')">
+                <label class="fw-bold">Birth Date</label>
+                 <div class="input-field">
+                   <div class="icon-container">
+                     <i class="fa fa-calendar p-2"></i>
+                   </div>
+                   <input formControlName="birthdate" type="date" class="w-100" [value]="selectedDoctor.birthdate" readonly>
+                 </div>
+               </div>
+              <small *ngIf="editDoctorForm.controls['birthdate'].dirty && editDoctorForm.hasError('required','birthdate')" class="text-danger">*Birth date is required.</small>
+              <small class="text-danger" *ngIf="doctorForm.controls['birthdate'].dirty && doctorForm.hasError('minimumAge', 'birthdate')">Age must be at least 18 years old</small>
+
+              <div class="form-group pt-3" [class.error]="editDoctorForm.controls['gender'].dirty && editDoctorForm.hasError('required', 'gender')">
+                <label class="fw-bold">Gender</label>
+                 <div class="input-field">
+                   <div class="icon-container">
+                     <i class="fa fa-venus-mars p-2"></i>
+                   </div>
+                   <input formControlName="gender" type="text" placeholder="Gender" class="w-100" [value]="selectedDoctor.gender" readonly>
+                 </div>
+               </div>
+              <small *ngIf="editDoctorForm.controls['name'].dirty && editDoctorForm.hasError('required','name')" class="text-danger">*Name is required.</small>
+
+              <div class="form-group pt-3" [class.error]="editDoctorForm.controls['phone'].dirty && editDoctorForm.hasError('required', 'phone')">
+                <label class="fw-bold">Phone</label>
+                 <div class="input-field">
+                   <div class="icon-container">
+                     <i class="fa fa-phone p-2"></i>
+                   </div>
+                   <input formControlName="phone" type="tel" placeholder="+639XXXXXXXXX" class="w-100" [value]="selectedDoctor.phone" readonly>
+                 </div>
+               </div>
+              <small *ngIf="editDoctorForm.controls['phone'].dirty && editDoctorForm.hasError('required','phone')" class="text-danger">*Phone number is required.</small>
+              <small *ngIf="doctorForm.controls['phone'].dirty && doctorForm.hasError('phoneInvalid', 'phone')" class="text-danger">*Phone must start with '+63' and be followed by 10 digits.</small>
+
+              <div class="form-group pt-3" [class.error]="doctorForm.controls['email'].dirty && doctorForm.hasError('required', 'email')">
+                <label class="fw-bold">Email</label>
+                <div class="input-field">
+                  <div class="icon-container">
+                    <i class="fa fa-envelope p-2"></i>
+                  </div>
+                  <input formControlName="email" type="email" placeholder="Email" class="w-100" [value]="selectedDoctor.email" readonly>
+                </div>
+                <small *ngIf="doctorForm.controls['email'].dirty && doctorForm.hasError('required','email')" class="text-danger">*Email is required.</small>
+                <small *ngIf="doctorForm.controls['email'].dirty && doctorForm.hasError('email','email')" class="text-danger">*Invalid email format.</small>
+              </div>
+
+              <div class="form-group pt-3" [class.error]="editDoctorForm.controls['username'].dirty && editDoctorForm.hasError('required', 'username')">
+                <label class="fw-bold">Username</label>
+                 <div class="input-field">
+                   <div class="icon-container">
+                     <i class="fa fa-user p-2"></i>
+                   </div>
+                   <input formControlName="username" type="text" placeholder="Username" class="w-100" [value]="selectedDoctor.username" readonly>
+                 </div>
+               </div>
+              <small *ngIf="editDoctorForm.controls['username'].dirty && editDoctorForm.hasError('required','username')" class="text-danger">*Name is required.</small>
+
+              <div class="form-group pt-3" [class.error]="editDoctorForm.controls['password'].dirty && editDoctorForm.hasError('required', 'password')">
+                <label class="fw-bold">Password</label>
+                 <div class="input-field">
+                   <div class="icon-container">
+                     <i class="fa fa-lock p-2"></i>
+                   </div>
+                   <input formControlName="password" type="text" placeholder="Password" class="w-100" [value]="selectedDoctor.password" readonly>
+                 </div>
+               </div>
+              <small *ngIf="editDoctorForm.controls['password'].dirty && editDoctorForm.hasError('required','password')" class="text-danger">*Name is required.</small>
+
+            <div class="modal-footer">
+              <button type="button" id="closeEdit" (click)="clearModal()" class="btn-secondary btn w-100" data-bs-dismiss="modal">Close</button>
+            </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

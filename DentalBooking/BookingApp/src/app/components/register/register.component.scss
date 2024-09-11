@@ -1,0 +1,89 @@
+.login__outer {
+    height: 100vh;
+    background: linear-gradient(to top, #c5c5c5 50%, #e1e1e1 90%) no-repeat;
+
+    .panel {
+        min-height: 380px;
+        box-shadow: 20px 20px 80px rgba(200, 200, 200, 0.8);
+        border-radius: 12px;
+        margin-top: 100px;
+
+        .panel-heading {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .panel-body {
+
+            form {
+
+                .input-field {
+                    border-radius: 5px;
+                    border: 1px solid #e1e1e1;
+                    color: #0000ff;
+
+                    padding: 5px;
+                    display: flex;
+                    align-items: center;
+                    cursor: pointer;
+
+                    input {
+                        border: none;
+                        outline: none;
+                        box-shadow: none;
+                        width: 100%;
+                    }
+                }
+
+                #forgot {
+                    text-decoration: none;
+                    text-align: center;
+                    margin: auto;
+                    cursor: pointer;
+            
+                    a {
+
+                        &:hover {
+                            text-decoration: none;
+                
+                            .form-inline label {
+                                padding-left: 10px;
+                                margin: 0;
+                                cursor: pointer;
+                            }
+                        }
+                    }
+                }
+        
+                .btn {
+                    margin-top: 20px;
+                    border-radius: 15px;
+                }
+            }
+        }
+
+        .bordert {
+            border-top: 1px solid #aaa;
+            position: relative;
+
+            &::after {
+                content: "or connect with";
+                position: absolute;
+                top: -15px;
+                left: 37%;
+                background-color: #fff;
+            }
+
+            img {
+                width: 40px;
+                height: 40px;
+                object-fit: cover;
+            }
+        }
+    }
+}
+
+.signup {
+    margin-top: -15px;
+    margin-bottom: 5px;
+}
